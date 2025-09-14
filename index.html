@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Freshers' Welcome</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom gradient for the card background, if desired */
+    .card-gradient-bg {
+      background-image: linear-gradient(to bottom right, #2c3e50, #4a69bd); /* Dark blue/grey to brighter blue */
+    }
+
+    .watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      opacity: 0.1;
+      font-size: 2rem;
+      font-weight: bold;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      color: #cbd5e1; /* Light gray for watermark */
+    }
+    .no-print {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-900 font-sans">
+  <div id="input-section" class="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg text-center">
+    <h1 class="text-2xl font-bold text-white mb-4">Enter Your Name</h1>
+    <input id="nameInput" type="text" placeholder="Your Name" class="px-4 py-2 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-400">
+    <button onclick="generateCard()" class="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Submit</button>
+  </div>
+
+  <div id="card-section" class="hidden relative bg-cover bg-center p-8 rounded-2xl shadow-xl w-[500px] h-[600px] flex flex-col justify-between card-gradient-bg text-gray-100" style=" background-image: url('ff.png'); font-family: 'Georgia', serif;">
+    <div class="watermark">DEPT OF COMPUTER SCIENCE</div>
+
+    <div class="text-left relative z-10">
+      <p id="greeting" class="text-lg font-semibold mb-4 italic text-yellow-300"></p>
+      <p class="text-md mb-6 text-center italic text-blue-200">Welcome to Level 1: Where bytes meet beats!</p>
+      <p class="text-md mb-6 text-left italic text-purple-200">Before the real begins, enjoy the bonus round - Let's debug the awkwardness and compile some memories.</p>
+    </div>
+
+    <div class="text-center relative z-10">
+      <h1 class="text-5xl font-extrabold mb-4 tracking-wide uppercase text-green-300"></h1>
+      <h1> </h1>
+      <br>
+      <br>
+      <p><br>
+      <br><br></p>
+      
+      <p class="text-lg text-5xl italic font-bold text-red-300">FRESHERS' WELCOME</p>
+      <P><br></P>
+      <p class="text-lg italic text-pink-200">Date: 19th September, 10 AM onwards</p>
+      <p class="text-lg italic text-teal-200">Hall: 123</p>
+      <br>
+     
+      <p class="text-lg mb-6 italic text-yellow-100">Join us to connect & innovate.</p>
+    </div>
+
+    <div class="text-center relative z-10">
+      <button id="downloadBtn" onclick="downloadCard()" class="px-6 py-2 bg-green-500 rounded-lg hover:bg-green-600 transition text-white">Download</button>
+    </div>
+  </div>
+
+  <script>
+    function sanitizeName(name) {
+      // Trim whitespace from the beginning and end
+      let sanitized = name.trim();
+
+      // Check for numbers or special characters
+      const regex = /[^a-zA-Z\s]/; // Matches anything that is NOT a letter or a space
+      if (regex.test(sanitized)) {
+        alert("Error: Name contains numbers or special characters. Please enter a valid name.");
+        return null; // Return null to indicate an error
+      }
+
+      // Take only the first name
+      const firstName = sanitized.split(' ')[0];
+
+      // Capitalize the first letter
+      return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+    }
+
+    function generateCard() {
+      const nameInput = document.getElementById('nameInput');
+      const name = nameInput.value;
+      const processedName = sanitizeName(name);
+
+      if(processedName) {
+        document.getElementById('greeting').innerText = `Dear ${processedName},`;
+        document.getElementById('input-section').classList.add('hidden');
+        document.getElementById('card-section').classList.remove('hidden');
+      }
+    }
+
+   function downloadCard() {
+      const downloadBtn = document.getElementById('downloadBtn');
+      downloadBtn.classList.add('hidden'); // hide before capture
+
+      html2canvas(document.getElementById('card-section'), { useCORS: true }).then(canvas => {
+        let link = document.createElement('a');
+        link.download = 'invitation_card.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        downloadBtn.classList.remove('hidden'); // show again after capture
+      });
+    }
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>
